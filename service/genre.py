@@ -2,12 +2,23 @@
 # некоторые методы могут оказаться просто прослойкой между dao и views,
 # но чаще всего будет какая-то логика обработки данных сейчас или в будущем.
 
-# Пример
 
-# class BookService:
-#
-#     def __init__(self, book_dao: BookDAO):
-#         self.book_dao = book_dao
-#
-#     def get_books(self) -> List["Book"]:
-#         return self.book_dao.get_books()
+class GenreService:
+
+    def __init__(self, genre_dao):
+        self.genre_dao = genre_dao
+
+    def get_all(self):
+        return self.genre_dao.get_all()
+
+    def get_one(self, uid):
+        return self.genre_dao.get_one(uid)
+
+    def create(self, data_in):
+        return self.genre_dao.create(data_in)
+
+    def update(self, data_in):
+        return self.genre_dao.update(data_in)
+
+    def delete(self, uid):
+        return self.genre_dao.delete(uid)
