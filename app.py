@@ -8,11 +8,13 @@ from config import Config
 from dao.model.movie import Movie
 from dao.model.director import Director
 from dao.model.genre import Genre
+from dao.model.user import User
 from setup_db import db
 from views.movies import movie_ns
 from views.directors import director_ns
 from views.genres import genre_ns
-#
+from views.users import user_ns
+
 # функция создания основного объекта app
 def create_app(config_object):
     app = Flask(__name__)
@@ -28,10 +30,10 @@ def register_extensions(app):
     api.add_namespace(movie_ns)
     api.add_namespace(director_ns)
     api.add_namespace(genre_ns)
-    # create_data(app, db)
-#
-#
-# функция
+    api.add_namespace(user_ns)
+    create_data(app, db)
+
+
 def create_data(app, db):
     with app.app_context():
         db.drop_all()
@@ -270,6 +272,13 @@ def create_data(app, db):
             )
             with db.session.begin():
                 db.session.add(d)
+
+        u1 = User(username="vasya", password="my_little_pony", role="user")
+        u2 = User(username="oleg", password="qwerty", role="user")
+        u3 = User(username="boss", password="P@ssw0rd", role="admin")
+
+        with db.session.begin():
+            db.session.add_all([u1, u2, u3])
 
 
 app = create_app(Config())
