@@ -40,12 +40,12 @@ def admin_required(func):
 
 
 def get_hash(password):
-    return hashlib.pbkdf2_hmac(
+    return base64.b64encode(hashlib.pbkdf2_hmac(
         'sha256',
-        password.encode('utf-8'),  # Convert the password to bytes
+        password.encode('utf-8'),
         PWD_HASH_SALT,
         PWD_HASH_ITERATIONS
-    ).decode("utf-8", "ignore")
+    ))
 
 
 def generate_token(data):
@@ -61,5 +61,5 @@ def generate_token(data):
 def compare_passwords(password_hash, other_password):
     return hmac.compare_digest(
         base64.b64decode(password_hash),
-        hashlib.pbkdf2_hmac('sha256', other_password.encode(), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
+        hashlib.pbkdf2_hmac('sha256', other_password.encode('utf-8'), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
     )
