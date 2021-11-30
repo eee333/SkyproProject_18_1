@@ -2,23 +2,19 @@
 
 from flask import request
 from flask_restx import Resource, Namespace
-# from dao.auth import UserSchema
-from implemented import auth_service
+from service.auth import generate_token
+from implemented import user_service
 
 auth_ns = Namespace('auth')
-# auth_schema = UserSchema()
-# auths_schema = UserSchema(many=True)
 
 
 @auth_ns.route('/')
-class UsersView(Resource):
-    def get(self):
-        all_auths = auth_service.get_all()
-        return auths_schema.dump(all_auths), 200
+class AuthView(Resource):
 
     def post(self):
         req_json = request.json
-        new_auth = auth_service.create(req_json)
-        return f"Created id: {new_auth.id}", 201
+        user = user_service.get_one()
+        tokens = generate_token(req_json)
+        return tokens, 200
 
 

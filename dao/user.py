@@ -12,6 +12,9 @@ class UserDAO:
     def get_all(self):
         return self.session.query(User).all()
 
+    def get_filter(self, filter_dict):
+        return self.session.query(User).filter_by(**filter_dict).all()
+
     def get_one(self, uid):
         return self.session.query(User).get(uid)
 

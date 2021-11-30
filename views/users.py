@@ -1,20 +1,30 @@
 # здесь контроллеры/хендлеры/представления для обработки запросов (flask ручки). сюда импортируются сервисы из пакета service
 
 from flask import request
-from flask_restx import Resource, Namespace
+from flask_restx import Resource, Namespace, reqparse
 from dao.user import UserSchema
 from implemented import user_service
 
 user_ns = Namespace('users')
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+parser = reqparse.RequestParser()
+parser.add_argument('username', type=str)
+parser.add_argument('role', type=str)
 
 
 @user_ns.route('/')
 class UsersView(Resource):
+    @user_ns.expect(parser)
     def get(self):
-        all_users = user_service.get_all()
-        return users_schema.dump(all_users), 200
+        req_args = parser.parse_args()
+        if any(req_args.values()):
+            all_users = user_service.get_filter(req_args)
+        else:
+            all_users = user_service.get_all()
+        if all_users:
+            return users_schema.dump(all_users), 200
+        return "not found", 404
 
     def post(self):
         req_json = request.json

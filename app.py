@@ -10,6 +10,7 @@ from dao.model.director import Director
 from dao.model.genre import Genre
 from dao.model.user import User
 from setup_db import db
+from views.auth import auth_ns
 from views.movies import movie_ns
 from views.directors import director_ns
 from views.genres import genre_ns
@@ -31,6 +32,7 @@ def register_extensions(app):
     api.add_namespace(director_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(user_ns)
+    api.add_namespace(auth_ns)
     # create_data(app, db)
 
 

@@ -6,5 +6,5 @@
 PWD_HASH_SALT = b'secret here'
 PWD_HASH_ITERATIONS = 100_000
 
-JWT_KEY = "t0p_Secret"
-JWT_METHOD ="HS256"
+JWT_SECRET = "t0p_Secret"
+JWT_ALGORITHM ="HS256"
