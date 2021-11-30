@@ -31,7 +31,7 @@ def register_extensions(app):
     api.add_namespace(director_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(user_ns)
-    create_data(app, db)
+    # create_data(app, db)
 
 
 def create_data(app, db):
