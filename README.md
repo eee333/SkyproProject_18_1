@@ -18,6 +18,7 @@ GET
 * http://localhost:10001/users/
 * http://localhost:10001/users/2
 
+
 Пользователи:
 ------
 1. (username="vasya", password="my_little_pony", role="user")
@@ -27,3 +28,4 @@ GET
 
 Пароли пользователей хешируются.
 Доступ через токены.
+Авторизация по ссылке http://localhost:10001/auth/
