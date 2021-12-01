@@ -1,8 +1,8 @@
 # здесь контроллеры/хендлеры/представления для обработки запросов (flask ручки). сюда импортируются сервисы из пакета service
 
-from flask import request
+from flask import request, abort
 from flask_restx import Resource, Namespace
-from service.auth import generate_token, compare_passwords
+from service.auth import generate_token, compare_passwords, jwt_decode
 from implemented import user_service
 
 auth_ns = Namespace('auth')
@@ -21,11 +21,19 @@ class AuthView(Resource):
             return "User not found", 401
         user_pass = req_json.get("password")
         pass_hashed = user[0].password
-        print(pass_hashed)
-        print(user_pass)
         if compare_passwords(pass_hashed, user_pass):
             tokens = generate_token(req_json)
             return tokens, 200
         return "Wrong password", 401
 
+    def put(self):
+        req_json = request.json
+        if not req_json:
+            abort(401, "Authorization Error")
+        refresh_token = req_json.get("refresh_token")
+        data = jwt_decode(refresh_token)
+        if data:
+            tokens = generate_token(data)
+            return tokens, 200
+        abort(401, "Authorization Error")
 

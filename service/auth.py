@@ -9,23 +9,27 @@ import jwt
 from constants import JWT_SECRET, JWT_ALGORITHM, PWD_HASH_SALT, PWD_HASH_ITERATIONS
 
 
-
-def jwt_decode():
+def auth_check():
     if "Authorization" not in request.headers:
-        abort(401, "Authorization Error")
+        return False
     token = request.headers["Authorization"].split("Bearer ")[-1]
+    return jwt_decode(token)
+
+
+def jwt_decode(token):
     try:
         decoded_jwt = jwt.decode(token, JWT_SECRET, JWT_ALGORITHM)
-    except Exception as e:
-        abort(401, f'JWT Decode Exception: {e}')
+    except:
+        return False
     else:
         return decoded_jwt
 
 
 def auth_required(func):
     def wrapper(*args, **kwargs):
-        jwt_decode()
-        return func(*args, **kwargs)
+        if auth_check():
+            return func(*args, **kwargs)
+        abort(401, "Authorization Error")
     return wrapper
 
 
@@ -63,3 +67,4 @@ def compare_passwords(password_hash, other_password):
         base64.b64decode(password_hash),
         hashlib.pbkdf2_hmac('sha256', other_password.encode('utf-8'), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
     )
+
