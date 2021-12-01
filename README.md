@@ -14,7 +14,7 @@ GET
 * http://localhost:10001/directors/
 * http://localhost:10001/directors/3
 * http://localhost:10001/genres/
-* http://localhost:10001/genres/1
+* http://localhost:10001/genres/18
 * http://localhost:10001/users/
 * http://localhost:10001/users/2
 

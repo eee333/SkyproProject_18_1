@@ -17,6 +17,7 @@ class DirectorsView(Resource):
         all_directors = director_service.get_all()
         return directors_schema.dump(all_directors), 200
 
+    @auth_required
     def post(self):
         req_json = request.json
         new_director = director_service.create(req_json)
@@ -25,12 +26,14 @@ class DirectorsView(Resource):
 
 @director_ns.route('/<int:uid>')
 class DirectorView(Resource):
+    @auth_required
     def get(self, uid: int):
         director = director_service.get_one(uid)
         if director:
             return director_schema.dump(director), 200
         return "", 404
 
+    @auth_required
     def put(self, uid: int):
         req_json = request.json
         if not req_json.get('id'):
@@ -39,6 +42,7 @@ class DirectorView(Resource):
             return f"Updated id: {uid}", 201
         return "not found", 404
 
+    @auth_required
     def delete(self, uid: int):
         if director_service.delete(uid) == 204:
             return "", 204
