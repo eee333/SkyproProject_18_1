@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace, reqparse
 from dao.movie import MovieSchema
 from implemented import movie_service
-from service.auth import auth_required
+from service.auth import auth_required, admin_required
 
 movie_ns = Namespace('movies')
 movie_schema = MovieSchema()
@@ -30,7 +30,7 @@ class MoviesView(Resource):
             return movies_schema.dump(all_movies), 200
         return "not found", 404
 
-    @auth_required
+    @admin_required
     def post(self):
         req_json = request.json
         new_movie = movie_service.create(req_json)
@@ -46,7 +46,7 @@ class MovieView(Resource):
             return movie_schema.dump(movie), 200
         return "not found", 404
 
-    @auth_required
+    @admin_required
     def put(self, uid: int):
         req_json = request.json
         if not req_json.get('id'):
@@ -55,7 +55,7 @@ class MovieView(Resource):
             return f"Updated id: {uid}", 201
         return "not found", 404
 
-    @auth_required
+    @admin_required
     def delete(self, uid: int):
         if movie_service.delete(uid) == 204:
             return "", 204

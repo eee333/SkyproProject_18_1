@@ -35,11 +35,12 @@ def auth_required(func):
 
 def admin_required(func):
     def wrapper(*args, **kwargs):
-        decoded_jwt = jwt_decode()
-        role = decoded_jwt.get("role")
-        if role != "admin":
-            abort(401, "Admin role required")
-        return func(*args, **kwargs)
+        decoded_jwt = auth_check()
+        if decoded_jwt:
+            role = decoded_jwt.get("role")
+            if role == "admin":
+                return func(*args, **kwargs)
+        abort(401, "Admin role required")
     return wrapper
 
 

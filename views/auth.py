@@ -21,6 +21,7 @@ class AuthView(Resource):
             return "User not found", 401
         user_pass = req_json.get("password")
         pass_hashed = user[0].password
+        req_json["role"] = user[0].role
         if compare_passwords(pass_hashed, user_pass):
             tokens = generate_token(req_json)
             return tokens, 200
@@ -36,4 +37,3 @@ class AuthView(Resource):
             tokens = generate_token(data)
             return tokens, 200
         abort(401, "Authorization Error")
-

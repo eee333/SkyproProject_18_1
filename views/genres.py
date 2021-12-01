@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace
 from dao.genre import GenreSchema
 from implemented import genre_service
-from service.auth import auth_required
+from service.auth import auth_required, admin_required
 
 genre_ns = Namespace('genres')
 genre_schema = GenreSchema()
@@ -18,7 +18,7 @@ class GenresView(Resource):
         all_genres = genre_service.get_all()
         return genres_schema.dump(all_genres), 200
 
-    @auth_required
+    @admin_required
     def post(self):
         req_json = request.json
         new_genre = genre_service.create(req_json)
@@ -34,7 +34,7 @@ class GenreView(Resource):
             return genre_schema.dump(genre), 200
         return "", 404
 
-    @auth_required
+    @admin_required
     def put(self, uid: int):
         req_json = request.json
         if not req_json.get('id'):
@@ -43,7 +43,7 @@ class GenreView(Resource):
             return f"Updated id: {uid}", 201
         return "not found", 404
 
-    @auth_required
+    @admin_required
     def delete(self, uid: int):
         if genre_service.delete(uid) == 204:
             return "", 204
