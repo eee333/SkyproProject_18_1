@@ -1,7 +1,9 @@
 # здесь бизнес логика, в виде классов или методов. сюда импортируются DAO классы из пакета dao и модели из dao.model
 # некоторые методы могут оказаться просто прослойкой между dao и views,
 # но чаще всего будет какая-то логика обработки данных сейчас или в будущем.
-from service.auth import get_hash
+import base64
+import hashlib
+from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
 
 
 class UserService:
@@ -36,3 +38,12 @@ class UserService:
 
     def delete(self, uid):
         return self.user_dao.delete(uid)
+
+
+def get_hash(password):
+    return base64.b64encode(hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        PWD_HASH_SALT,
+        PWD_HASH_ITERATIONS
+    ))
