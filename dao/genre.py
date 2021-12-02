@@ -28,16 +28,16 @@ class GenreDAO:
                 obj.name = data_in.get('name')
             self.session.add(obj)
             self.session.commit()
-            return 201
-        return 404
+            return obj
+        return None
 
     def delete(self, uid):
         obj = self.get_one(uid)
         if obj:
             self.session.delete(obj)
             self.session.commit()
-            return 204
-        return 404
+            return obj
+        return None
 
 
 class GenreSchema(Schema):

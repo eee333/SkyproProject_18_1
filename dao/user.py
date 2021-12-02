@@ -35,16 +35,16 @@ class UserDAO:
                 obj.role = data_in.get('role')
             self.session.add(obj)
             self.session.commit()
-            return 201
-        return 404
+            return obj
+        return None
 
     def delete(self, uid):
         obj = self.get_one(uid)
         if obj:
             self.session.delete(obj)
             self.session.commit()
-            return 204
-        return 404
+            return obj
+        return None
 
 
 class UserSchema(Schema):

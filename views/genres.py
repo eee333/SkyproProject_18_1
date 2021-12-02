@@ -39,12 +39,12 @@ class GenreView(Resource):
         req_json = request.json
         if not req_json.get('id'):
             req_json['id'] = uid
-        if genre_service.update(req_json) == 201:
+        if genre_service.update(req_json):
             return f"Updated id: {uid}", 201
         return "not found", 404
 
     @admin_required
     def delete(self, uid: int):
-        if genre_service.delete(uid) == 204:
+        if genre_service.delete(uid):
             return "", 204
         return "not found", 404
