@@ -4,3 +4,5 @@ Postman.md
 Dockerfile
 .gitignore
 /venv
+docker-compose.yaml
+docker-compose-server.yaml
