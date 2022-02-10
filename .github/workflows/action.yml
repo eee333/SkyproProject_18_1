@@ -40,3 +40,4 @@ jobs:
           script: |
             cd project_26_git
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
+
