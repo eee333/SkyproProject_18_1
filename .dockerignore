@@ -6,3 +6,4 @@ Dockerfile
 /venv
 docker-compose.yaml
 docker-compose-server.yaml
+docker-compose-ci.yaml
