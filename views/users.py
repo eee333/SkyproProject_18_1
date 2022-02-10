@@ -29,7 +29,7 @@ class UsersView(Resource):
     def post(self):
         req_json = request.json
         new_user = user_service.create(req_json)
-        return f"Created id: {new_user.id}", 201
+        return f"Created id: {new_user.id} Это новый пользователь!", 201
 
 
 @user_ns.route('/<int:uid>')
